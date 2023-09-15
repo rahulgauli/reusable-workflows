@@ -1,0 +1,33 @@
+name: Input Variables Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    # Define input variables
+    inputs:
+      PYTHON_TEST_COMMAND: "python3 --version"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Display Input Variables
+        run: |
+          set -x
+          pytest_command="${{ inputs.PYTHON_TEST_COMMAND }}"
+          if [ -n "${pytest_command}" ]; then
+            if ! "${{ inputs.PYTHON_TEST_COMMAND }}" ; then
+              echo ":: warning title=Pytests failed::Either given command has failed or few tests have failed to execute"
+            else
+              echo "Pytests are executed successfully"
+            fi
+          else
+            echo "Pytests are skipped"
+          fi
