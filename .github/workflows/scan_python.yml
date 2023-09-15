@@ -27,7 +27,6 @@ jobs:
         shell: bash
 
       - name: Run Unit Tests with pytest
-        working-directory: ${{ inputs.BASE_FOLDER }}
         shell: bash
         if: inputs.PYTHON_TEST_COMMAND != ''
         run: |
