@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Display Input Variables
+      - name: Run Python Test Command
         run: |
           set -x
           pytest_command="${{ env.PYTHON_TEST_COMMAND }}"
