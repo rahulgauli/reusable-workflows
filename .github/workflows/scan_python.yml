@@ -1,0 +1,40 @@
+name: Scan Python CI Workflow
+
+on:
+  workflow_call:
+    inputs:
+      PYTHON_TEST_COMMAND:
+        description: Full pytest command to run
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  Scan_Python:  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3.5.3  
+
+      - name: Set Start Time
+        id: set-time
+        run: echo "start-time=$(date +'%Y-%m-%dT%H:%M:%S%z')" >> "$GITHUB_OUTPUT"
+        shell: bash
+
+      - name: Run Unit Tests with pytest
+        working-directory: ${{ inputs.BASE_FOLDER }}
+        shell: bash
+        if: inputs.PYTHON_TEST_COMMAND != ''
+        run: |
+          set -x
+          pytest_command="${{ inputs.PYTHON_TEST_COMMAND }}"
+          if [ -n "${pytest_command}" ]; then
+            if ! "${{ inputs.PYTHON_TEST_COMMAND }}" ; then
+              echo "::warning title=Pytests failed::Either given command has failed or few tests have failed to execute"
+            else
+              echo "Pytests are executed successfully" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          else
+            echo "Pytests are skipped" >> "$GITHUB_STEP_SUMMARY"
+          fi
