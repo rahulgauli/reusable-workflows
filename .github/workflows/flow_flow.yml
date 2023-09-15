@@ -23,7 +23,7 @@ jobs:
           set -x
           pytest_command="${{ env.PYTHON_TEST_COMMAND }}"
           if [ -n "${pytest_command}" ]; then
-            if ! "${{ env.PYTHON_TEST_COMMAND }}" ; then
+            if ! "${pytest_command}" ; then
               echo ":: warning title=Pytests failed::Either given command has failed or few tests have failed to execute"
             else
               echo "Pytests are executed successfully"
