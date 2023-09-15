@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # Define input variables
-    inputs:
+    env:
       PYTHON_TEST_COMMAND: "python3 --version"
 
     steps:
@@ -21,9 +21,9 @@ jobs:
       - name: Display Input Variables
         run: |
           set -x
-          pytest_command="${{ inputs.PYTHON_TEST_COMMAND }}"
+          pytest_command="${{ env.PYTHON_TEST_COMMAND }}"
           if [ -n "${pytest_command}" ]; then
-            if ! "${{ inputs.PYTHON_TEST_COMMAND }}" ; then
+            if ! "${{ env.PYTHON_TEST_COMMAND }}" ; then
               echo ":: warning title=Pytests failed::Either given command has failed or few tests have failed to execute"
             else
               echo "Pytests are executed successfully"
